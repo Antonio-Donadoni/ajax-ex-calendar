@@ -1,13 +1,16 @@
-function createCalendar() {
-  for (var i = 1; i <= daysInMonth; i++) {
+function createCalendar(daysMonth, monthInNumber, month) {
+
+
+  $(' header h1').html(month)
+  for (var i = 1; i <= daysMonth; i++) {
      var target = $("#calendar-list");
-     var data = "<li data-day='" + i + "' data-month='" + monthInNumber + "'>" + i + " " + month + " 2018</li>"
+     var data = "<li data-day='" + i + "' data-month='" + monthInNumber + "'>" + i + "</li>"
 
     target.append(data);
      };
 }
 
-function appendHolidays () {
+function appendHolidays (year,monthInNumber) {
   $.ajax ({
      url : 'https://flynn.boolean.careers/exercises/api/holidays',
      method : 'GET',
@@ -27,14 +30,13 @@ function appendHolidays () {
             var date = moment(date);
             date = date.format ("YYYY-M-D");
 
-
             $( "li" ).each(function() {
               var currentDay = $(this);
               var day = currentDay.data("day");
               var month = currentDay.data("month");
               var currentDate = "2018-" + month + "-" + day;
                 if (currentDate == date) {
-                  $(this).append("<span>- " + name + "</span>");
+                  $(this).append("<span>" + name + "</span>");
                   $(this).addClass("active");
                 }
               })
@@ -54,17 +56,48 @@ function appendHolidays () {
 
 
 function init() {
+  // SITUAZIONE INIZIALE
+ var selectedMonth = 1;
+ var calendar = moment("2018-"+ selectedMonth +"-01", "YYYY-M-DD");
+ var month = calendar.format("MMMM");
+ var year = calendar.format("YYYY");
+ var daysMonth = moment(year + "-" + selectedMonth, "YYYY-M").daysInMonth();
+  createCalendar(daysMonth, selectedMonth, month);
+  appendHolidays(year,selectedMonth);
 
- calendar = moment("2018-04-01", "YYYY-MM-DD");
- month = calendar.format("MMMM");
- monthInNumber = calendar.format("M");
- year = calendar.format("YYYY");
- daysInMonth = moment().daysInMonth(year + "-" + month, "YYYY-MM");
+ // CLICK AVANTI
+$('#arrowRight').click(function() {
+$("#calendar-list").empty();
+selectedMonth = selectedMonth + 1;
+$('#arrowLeft').show();
 
+if (selectedMonth == 12) {
+  $('#arrowRight').hide();
+}
 
-createCalendar();
+var calendar = moment("2018-"+ selectedMonth +"-01", "YYYY-M-DD");
+var month = calendar.format("MMMM");
+var daysMonth = moment(year + "-" + selectedMonth, "YYYY-M").daysInMonth();
+  createCalendar(daysMonth, selectedMonth, month);
+  appendHolidays(year,selectedMonth);
+});
 
-appendHolidays();
+// CLICK INDIETRO
+$('#arrowLeft').click(function() {
+$("#calendar-list").empty();
+selectedMonth = selectedMonth - 1;
+$('#arrowRight').show();
+
+if (selectedMonth == 1) {
+  $('#arrowLeft').hide();
+}
+
+var calendar = moment("2018-"+ selectedMonth +"-01", "YYYY-M-DD");
+var month = calendar.format("MMMM");
+var daysMonth = moment(year + "-" + selectedMonth, "YYYY-M").daysInMonth();
+  createCalendar(daysMonth, selectedMonth, month);
+  appendHolidays(year,selectedMonth);
+});
 
   };
 

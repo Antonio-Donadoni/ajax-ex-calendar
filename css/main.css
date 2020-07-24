@@ -4,10 +4,60 @@
    box-sizing: border-box;
  }
 
- li.active span {
-   color: red;
- }
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10vh;
+  border-bottom: 5px solid red;
+}
+
+main {
+  padding: 0 10%;
+}
+
+header h1 {
+  margin: 0 20px;
+  min-width: 200px;
+  text-align: center;
+}
+#arrowRight, #arrowLeft {
+
+  font-size: 2rem;
+  color: red;
+  cursor: pointer;
+}
+#arrowLeft {
+  display: none;
+}
+
  .calendar-list
  {
    text-align: center;
+   display: flex;
+   flex-wrap: wrap;
+   list-style: none;
+ }
+
+ .calendar-list li
+ {
+   padding: 10px;
+   width: calc(100% / 7);
+   height: 100px;
+   border: 1px solid black;
+   display: flex;
+   justify-content: flex-end;
+   position: relative;
+   font-size: 1.2rem;
+ }
+
+  li.active {
+    color: red;
+  }
+
+ li span {
+   position: absolute;
+   bottom: 10px;
+   right: 10px;
+   font-size: 1.5rem;
  }
